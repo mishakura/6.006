@@ -19,6 +19,18 @@ def bfs(Adj, s):   #adjacency list(hash map), s: starting vertex
                     level[-1].append(v)
     return parent
                                  
+def unweighted_shortest_path(Adj, s, t): # O(V + E) / t reachable from s?
+    parent = bfs(Adj, s)
+    #parent = [4,5,5,4,0,4]
+    if parent[t] is None:
+        return None
+    i = t
+    path = [t]
+    while i != t:
+        i = parent[i]
+        path.append(i)
+    return path[::-1]
+
 
 
 
