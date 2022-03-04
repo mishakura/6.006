@@ -19,8 +19,4 @@ def full_dfs(Adj):
             dfs(Adj, vertice, parent, order)
     return parent,order
 
-Adj = {0:[1], 1:[2], 2:[], 3:[4], 4:[]}
-
-        
-            
-        
+Adj = {0:[4],1:[], 2:[1], 3:[2],4:[5,3],5:[1,2]}        
