@@ -1,3 +1,4 @@
+import heapq
 
 #If graph is sparse we should use a binary Heap
 class Item:
@@ -57,8 +58,6 @@ class PriorityQueueHeap():
                 self.A[idx].key = key
                 self.min_heapify_up(idx)
 
-
-
 #If graph is dense we can use normal array
 class PriorityQueueArray():
     def __init__(self):
@@ -86,11 +85,22 @@ def try_to_relax(Adj, w,d,parent,u,v):
         parent[v] = u
 
 
+def try_to_relax_heapq(Adj, w,d,parent,u,v, heap):
+    vIndex = heap.index([d[v], v])
+    if d[v] > d[u] + w(u,v):
+        d[v] = d[u] + w(u,v)
+        parent[v] = u
+        heap[vIndex][0] = d[v]
+
+
+
 def dijkstra(Adj, w, s):
     distance = [float("inf") for node in Adj]
     parent = [None for node in Adj]
     distance[s], parent[s] = 0, s
     Q = PriorityQueueHeap() # Here we select wich type of DS we want for the PQ
+    for v in range(amountOfVertices):
+        Q.insert(v, distance[v])
     amountOfVertices = len(Adj)
     for _ in range(amountOfVertices):
         u = Q.extract_min()
@@ -98,7 +108,27 @@ def dijkstra(Adj, w, s):
             try_to_relax(Adj, w, distance, parent, u, v)
             Q.decrease_key(v, distance[v])
     return distance, parent 
-   
+
+
+#heapq implementation
+
+def dijkstraHeapq(Adj, w, s):
+    distance = [float("inf") for node in Adj]
+    parent = [None for node in Adj]
+    parent[s], distance[s] = s, 0
+    heap = []
+    amountOfVertices = len(Adj)
+    for i in range(amountOfVertices):
+        heap.append([distance[i], i])
+    heapq.heapify(heap)
+    for _ in range(amountOfVertices):
+        u = heapq.heappop
+        for v in Adj[u][1]:
+            try_to_relax_heapq(Adj, w,distance,parent, u[1], v[1], heap)
+            heapq.heapify(heap)
+    return parent, distance
+
+
+
+    
             
-
-
